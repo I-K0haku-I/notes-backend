@@ -7,4 +7,4 @@ from .serializers import NoteTagSerializer
 
 class NoteTagsViewSet(viewsets.ModelViewSet):
     queryset = NoteTag.objects.all()
-    serializer_class = NoteTagSerializer 
+    serializer_class = NoteTagSerializer
