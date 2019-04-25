@@ -5,7 +5,4 @@ from notes.models import NoteType
 class NoteTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = NoteType
-        fields = (
-            'id',
-            'name',
-        )
+        fields = '__all__'
