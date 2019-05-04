@@ -8,3 +8,5 @@ from .serializers import NotesSerializer
 class NotesViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NotesSerializer
+
+# TODO: add filtering for timeframes, through params?
