@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django.db import models
 
 
@@ -5,6 +7,7 @@ class Note(models.Model):
     time = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    duration = models.DurationField(default=timedelta(seconds=0))
     content = models.TextField()
     detail = models.TextField(blank=True)
     type = models.ForeignKey('NoteType', null=True, blank=True, on_delete=models.SET_NULL)  # TODO: might want to show names instead of id here
