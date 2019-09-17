@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'middleware.masterkey.MasterKeyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -125,3 +126,10 @@ STATIC_URL = '/static/'
 # REST_FRAMEWORK = {
 #     'DATETIME_FORMAT': '%s'
 # }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+}
+
+VERY_COOL_PASSWORD = 'yourpasswordhere'
