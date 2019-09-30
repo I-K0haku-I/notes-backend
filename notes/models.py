@@ -10,13 +10,8 @@ class Note(models.Model):
     duration = models.DurationField(default=timedelta(seconds=0))
     content = models.TextField()
     detail = models.TextField(blank=True)
-    type = models.ForeignKey('NoteType', null=True, blank=True, on_delete=models.SET_NULL)  # TODO: might want to show names instead of id here
     tags = models.ManyToManyField('NoteTag', blank=True)
 
-
-class NoteType(models.Model):
-    name = models.CharField(max_length=15, unique=True)
-    description = models.TextField(blank=True)
 
 
 class NoteTag(models.Model):
