@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}{{ title }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    {% for todo in todos %}
+        <article class="post">
+            <header>
+                <div>
+                    <h1>{{ todo['title'] }}</h1>
+                    <div class='about'>made @ {{ todo['date'] }}</div>
+                    <div class='about'>Tags: {% for tag in todo['tags'] %}{{ tag }}{% if not loop.last %},{% endif %}{% endfor %}</div>
+                </div>
+                <a class="action" href="{{ url_for('notes.activate', id=todo['id'], is_done=todo['is_done']) }}">{% if todo['is_done'] %}
+                ENABLE
+                {% else %}
+                DONE
+                {% endif %}</a>
+            </header>
+            <p class="body">{{ todo['body'] }}</p>
+        </article>
+        {% if not loop.last %}
+            <hr> 
+        {% endif %}
+    {% endfor %}
+{% endblock %}

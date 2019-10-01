@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <title>{% block title %}
+    
+    {% endblock title %} - TODO APP</title>
+    <nav>
+        <h1>TODO APP</h1>
+        <ul>
+            <li><a href="{{ url_for('notes.all') }}">NOTES</a></li>
+            <li><a href="{{ url_for('notes.todo') }}">TODO</a></li>
+            <li><a href="{{ url_for('notes.done') }}">DONE</a></li>
+        </ul>
+    </nav>
+    <section class="content">
+        <header>
+            {% block header %}{% endblock %}
+        </header>
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </section>
+</body>
+</html>
