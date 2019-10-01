@@ -21,5 +21,5 @@ from notes.views import TestView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', TestView.as_view()),
-    path('notes-backend/', include('notes.api.urls'))
+    path('api/', include('notes.api.urls'))
 ]

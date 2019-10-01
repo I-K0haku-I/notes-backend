@@ -1,15 +1,21 @@
 import sys
-from flask import Blueprint, render_template, redirect, request
+from functools import wraps
+from flask import Blueprint, render_template, redirect, request, session
 from .connector import get_conn
+import requests
+import aiohttp
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')
 
 
 def protect(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
-        passw = request.args.get('p')
-        if passw != 'shh123':
-            return 'Need password!'
+        if 'is_logged_in' not in session:
+            passw = request.args.get('p')
+            if passw != 'shh123':
+                session['is_logged_in'] = True
+                return 'Need password!'
         return func(*args, **kwargs)
     return wrapper
 
