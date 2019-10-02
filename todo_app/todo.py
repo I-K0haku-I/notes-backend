@@ -1,9 +1,7 @@
-import sys
 from functools import wraps
 from flask import Blueprint, render_template, redirect, request, session
 from .connector import get_conn
-import requests
-import aiohttp
+
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')
 
@@ -19,27 +17,6 @@ def protect(func):
         return func(*args, **kwargs)
     return wrapper
 
-
-is_done_1 = True
-is_done_2 = False
-todos = [
-    {
-        'id': 1,
-        'tags': ['blah', '3242', 'tasks'],
-        'date': "2019-09-29 14:00",
-        'title': 'do some stuff',
-        'body': 'lajdflkajlfkajdlkfa',
-        'is_done': is_done_1
-    },
-    {
-        'id': 2,
-        'tags': ['asdfa', 'tasks'],
-        'date': "2019-09-29 14:01",
-        'title': 'do some stuff2',
-        'body': 'dlkjlk ljdfla fa oi',
-        'is_done': is_done_2
-    }
-]
 
 def get_tags():
     conn = get_conn()

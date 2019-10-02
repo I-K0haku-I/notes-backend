@@ -11,6 +11,7 @@ class Note(models.Model):
     content = models.TextField()
     detail = models.TextField(blank=True)
     tags = models.ManyToManyField('NoteTag', blank=True)
+    is_done = models.BooleanField(default=False)
 
 
 
