@@ -79,7 +79,4 @@ def done():
 def activate(id, is_done):
     is_done = True if is_done == 'True' else False
     set_is_done(id, not is_done)
-    if not is_done:
-        return redirect('/notes/todo')
-    else:
-        return redirect('/notes/done')
+    return redirect(request.referrer)
