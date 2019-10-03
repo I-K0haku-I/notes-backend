@@ -1,7 +1,7 @@
 from functools import wraps
 from django.conf import settings
 from flask import Blueprint, render_template, redirect, request, session
-from .connector import get_conn
+from notes.models import Note, NoteTag
 
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')
@@ -19,35 +19,30 @@ def protect(func):
     return wrapper
 
 
-def get_tags():
-    conn = get_conn()
-    tags = conn.tags.list().json()
-    tags_n = {t['id']: t['name'] for t in tags}
-    tags_r = {t['name']: t['id'] for t in tags}
-    return tags_n, tags_r
-
-
 def get_notes():
-    conn = get_conn()
-    tags_n, tags_r = get_tags()
-    notes = conn.notes.list().json()
+    notes = Note.objects.all()
     notes = [
         {
-            'id': n['id'], 'tags': [tags_n[t] for t in n['tags']], 'date': n['time'],
-            'title': n['content'].capitalize(), 'body': n['detail'], 'is_done': n['is_done']
+            'id': n.id, 'tags': [t.name for t in n.tags.all()], 'date': n.time,
+            'title': n.content.capitalize(), 'body': n.detail, 'is_done': n.is_done
         } for n in notes
     ]
     return notes
 
+
 def set_is_done(id, is_done):
-    conn = get_conn()
-    conn.notes.update(id, {'is_done': is_done})
+    n = Note.objects.get(id=id)
+    n.is_done = is_done
+    n.save()
+
 
 def filter_tags(notes, tags_lst):
     return [n for n in notes if any([tag in n['tags'] for tag in tags_lst])]
 
+
 def filter_is_done(notes, is_done):
     return [n for n in notes if n['is_done'] == is_done]
+
 
 todo_filter = ('todo', 'todos', 'task', 'tasks')
 
