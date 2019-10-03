@@ -1,4 +1,5 @@
 from functools import wraps
+from django.conf import settings
 from flask import Blueprint, render_template, redirect, request, session
 from .connector import get_conn
 
@@ -11,7 +12,7 @@ def protect(func):
     def wrapper(*args, **kwargs):
         if 'is_logged_in' not in session:
             passw = request.args.get('p')
-            if passw != 'shh123':
+            if passw == settings.VERY_COOL_PASSWORD:
                 session['is_logged_in'] = True
                 return 'Need password!'
         return func(*args, **kwargs)
