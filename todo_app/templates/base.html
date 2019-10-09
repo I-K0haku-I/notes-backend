@@ -3,34 +3,37 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- <meta http-equiv="X-UA-Compatible" content="ie=edge"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootadmin.min.css') }}">
-</head>
-
-<body class="bg-light">
     <title>{% block title %}
 
         {% endblock title %} - TODO APP</title>
+</head>
+
+<body class="bg-light">
 
     <nav class="navbar navbar-expand navbar-dark bg-info">
+        <a class="sidebar-toggle mr-3" href="#sidebarCollapse" data-toggle="collapse" role="button"><i
+                class="fa fa-bars fa-2x"></i></a>
         <h1 class="navbar-brand">TODO APP</h1>
     </nav>
 
     <div class="d-flex">
-        <div class="sidebar sidebar-dar bg-dark">
+        <div class="sidebar sidebar-dark bg-dark" id="sidebarCollapse">
             <ul class="list-unstyled">
                 <li><a href="{{ url_for('notes.all') }}"><i class="fa fa-fw fa-book"></i> NOTES</a></li>
                 <li><a href="{{ url_for('notes.todo') }}"><i class="fa fa-fw fa-pencil-alt"></i> TODO</a></li>
                 <li><a href="{{ url_for('notes.done') }}"><i class="fa fa-fw fa-check-square"></i> DONE</a></li>
             </ul>
         </div>
-    
+
         <div class="content p-4">
             <h2 class="mb-4">
                 {% block header %}{% endblock %}
@@ -41,7 +44,7 @@
             {% block content %}{% endblock %}
         </div>
     </div>
-    
+
 
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
