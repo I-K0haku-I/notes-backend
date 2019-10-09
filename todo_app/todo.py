@@ -18,15 +18,19 @@ def protect(func):
         return func(*args, **kwargs)
     return wrapper
 
-
-def get_notes():
-    notes = Note.objects.all()
+def flasked_notes(notes):
     notes = [
         {
-            'id': n.id, 'tags': [t.name for t in n.tags.all()], 'date': n.time,
+            'id': n.id, 'tags': [t.name for t in n.tags.all()], 'date': str(n.time)[0:-9],
             'title': n.content.capitalize(), 'body': n.detail, 'is_done': n.is_done
         } for n in notes
     ]
+    return notes
+
+
+def get_notes():
+    notes = Note.objects.all()
+    notes = flasked_notes(notes)
     return notes
 
 
@@ -47,11 +51,16 @@ def filter_is_done(notes, is_done):
 todo_filter = ('todo', 'todos', 'task', 'tasks')
 
 
+def get_non_todos():
+    notes = Note.objects.all().exclude(tags__name__in=todo_filter)
+    return flasked_notes(notes)
+
+
 @bp.route('/')
 @bp.route('/all')
 @protect
 def all():
-    notes = get_notes()
+    notes = get_non_todos()
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
 
