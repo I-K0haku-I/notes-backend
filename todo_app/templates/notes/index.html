@@ -1,28 +1,44 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    <h1>{% block title %}{{ title }}{% endblock %}</h1>
+<h1>{% block title %}{{ title }}{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-    {% for note in notes %}
-        <article class="post">
-            <header>
-                <div>
-                    <h1>{{ note['title'] }}</h1>
-                    <div class='about'>made @ {{ note['date'] }}</div>
-                    <div class='about'>Tags: {% for tag in note['tags'] %}{{ tag }}{% if not loop.last %},{% endif %}{% endfor %}</div>
-                </div>
-                <a class="action" href="{{ url_for('notes.activate', id=note['id'], is_done=note['is_done']) }}">{% if note['is_done'] %}
+{% for note in notes %}
+<article class="post card mb-4">
+    <header class="card-header">
+        <div>
+            <h1>{{ note['title'] }}</h1>
+            <div class='about'>made @ {{ note['date'] }}</div>
+            <div class='about'>Tags: {% for tag in note['tags'] %}{{ tag }}{% if not loop.last %},
+                {% endif %}{% endfor %}</div>
+        </div>
+    </header>
+    {% if note['body'] != '' or title != 'NOTES' %}
+    <div class="card-body">
+        <p class="body">{{ note['body'] }}</p>
+        <form action="{{ url_for('notes.activate', id=note['id'], is_done=note['is_done']) }}" method="get">
+            {% if title != 'NOTES' %}
+            {% if note['body'] != '' %}
+            <hr>
+            {% endif %}
+            {% if note['is_done'] %}
+            <button type="submit" class="btn btn-success align-right">
                 RE-ENABLE
-                {% else %}
+            </button>
+            {% else %}
+            <button type="submit" class="btn btn-outline-success align-right">
                 DONE
-                {% endif %}</a>
-            </header>
-            <p class="body">{{ note['body'] }}</p>
-        </article>
-        {% if not loop.last %}
-            <hr> 
-        {% endif %}
-    {% endfor %}
+            </button>
+            {% endif %}
+            {% endif %}
+        </form>
+    </div>
+    {% endif %}
+</article>
+{% if not loop.last %}
+<hr>
+{% endif %}
+{% endfor %}
 {% endblock %}
