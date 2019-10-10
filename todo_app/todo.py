@@ -43,6 +43,8 @@ def set_is_done(id, is_done):
 def filter_tags(notes, tags_lst):
     return [n for n in notes if any([tag in n['tags'] for tag in tags_lst])]
 
+def filter_tags_not(notes, tags_lst):
+    return [n for n in notes if not any([tag in n['tags'] for tag in tags_lst])]
 
 def filter_is_done(notes, is_done):
     return [n for n in notes if n['is_done'] == is_done]
@@ -58,16 +60,28 @@ def get_non_todos():
 
 @bp.route('/')
 @bp.route('/all')
+@bp.route('/all/<tags>')
 @protect
-def all():
+def all(tags=None):
     notes = get_non_todos()
+    if tags is not None:
+        if not isinstance(tags, (list, tuple)):
+            tags = [tags]
+        notes = filter_tags(notes, tags)
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
 
 @bp.route('/todo')
+@bp.route('/todo/<tags>')
 @protect
-def todo():
+def todo(tags=None):
     todos = filter_is_done(filter_tags(get_notes(), todo_filter), False)
+    if tags is None:
+        todos = filter_tags_not(todos, ('work',))
+    else:
+        if not isinstance(tags, (list, tuple)):
+            tags = [tags]
+        todos = filter_tags(todos, tags)
     return render_template('notes/index.html', notes=todos, title='TODO')
 
 

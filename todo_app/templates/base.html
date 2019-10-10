@@ -30,7 +30,16 @@
         <div class="sidebar sidebar-dark bg-dark">
             <ul class="list-unstyled">
                 <li><a href="{{ url_for('notes.all') }}"><i class="fa fa-fw fa-book"></i> NOTES</a></li>
-                <li><a href="{{ url_for('notes.todo') }}"><i class="fa fa-fw fa-pencil-alt"></i> TODO</a></li>
+                <!-- <li><a href="{{ url_for('notes.todo') }}"><i class="fa fa-fw fa-pencil-alt"></i> TODO</a></li> -->
+                <li>
+                    <a href="#done_work" data-toggle="collapse">
+                        <i class="fa fa-fw fa-pencil-alt"></i> TODO
+                    </a>
+                    <ul id="done_work" class="list-unstyled">
+                        <li><a href="{{ url_for('notes.todo') }}">ME</a></li>
+                        <li><a href="{{ url_for('notes.todo', tags='work') }}">WORK</a></li>
+                    </ul>
+                </li>
                 <li><a href="{{ url_for('notes.done') }}"><i class="fa fa-fw fa-check-square"></i> DONE</a></li>
             </ul>
         </div>
