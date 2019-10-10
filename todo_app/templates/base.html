@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/datatables.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootadmin.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hive.css') }}">
+
     <title>{% block title %}
 
         {% endblock title %} - TODO APP</title>
@@ -20,13 +22,12 @@
 <body class="bg-light">
 
     <nav class="navbar navbar-expand navbar-dark bg-info">
-        <a class="sidebar-toggle mr-3" href="#sidebarCollapse" data-toggle="collapse" role="button"><i
-                class="fa fa-bars fa-2x"></i></a>
+        <a class="sidebar-toggle mr-3" href="#"><i class="fa fa-bars fa-2x"></i></a>
         <h1 class="navbar-brand">TODO APP</h1>
     </nav>
 
     <div class="d-flex">
-        <div class="sidebar sidebar-dark bg-dark" id="sidebarCollapse">
+        <div class="sidebar sidebar-dark bg-dark">
             <ul class="list-unstyled">
                 <li><a href="{{ url_for('notes.all') }}"><i class="fa fa-fw fa-book"></i> NOTES</a></li>
                 <li><a href="{{ url_for('notes.todo') }}"><i class="fa fa-fw fa-pencil-alt"></i> TODO</a></li>
@@ -47,10 +48,10 @@
 
 
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/datatables.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/bootadmin.min.js') }}"></script>
-
     {% block extra_scripts %}{% endblock %}
 </body>
 
