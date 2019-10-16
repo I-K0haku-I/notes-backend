@@ -6,7 +6,7 @@
 
 {% block content %}
 {% for note in notes %}
-<article class="post card mb-4">
+<article class="post card mb-4 {% if note['is_important'] %}border border-danger{% endif %}"{% if note['is_important'] %} style="border-width: 5px;"{% endif %}>
     <header class="card-header">
         <div>
             <h1>{{ note['title'] }}</h1>
@@ -33,6 +33,9 @@
             </button>
             {% endif %}
             {% endif %}
+        </form>
+        <form action="{{ url_for('notes.make_important', id=note['id']) }}" method="get">
+            <button type="submit" class="btn btn-outline-danger align-right">PRIORITIZE</button>
         </form>
     </div>
     {% endif %}

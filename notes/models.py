@@ -12,6 +12,7 @@ class Note(models.Model):
     detail = models.TextField(blank=True)
     tags = models.ManyToManyField('NoteTag', blank=True)
     is_done = models.BooleanField(default=False)
+    is_important = models.BooleanField(default=False)
 
 
 

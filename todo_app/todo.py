@@ -22,7 +22,7 @@ def flasked_notes(notes):
     notes = [
         {
             'id': n.id, 'tags': [t.name for t in n.tags.all()], 'date': str(n.time)[0:-9],
-            'title': n.content.capitalize(), 'body': n.detail, 'is_done': n.is_done
+            'title': n.content.capitalize(), 'body': n.detail, 'is_done': n.is_done, 'is_important': n.is_important
         } for n in notes
     ]
     return notes
@@ -37,6 +37,11 @@ def get_notes():
 def set_is_done(id, is_done):
     n = Note.objects.get(id=id)
     n.is_done = is_done
+    n.save()
+
+def set_is_important(id):
+    n = Note.objects.get(id=id)
+    n.is_important = True
     n.save()
 
 
@@ -82,6 +87,7 @@ def todo(tags=None):
         if not isinstance(tags, (list, tuple)):
             tags = [tags]
         todos = filter_tags(todos, tags)
+    todos = sorted(todos, key=lambda t: t['is_important'], reverse=True)
     return render_template('notes/index.html', notes=todos, title='TODO')
 
 
@@ -97,4 +103,9 @@ def done():
 def activate(id, is_done):
     is_done = True if is_done == 'True' else False
     set_is_done(id, not is_done)
+    return redirect(request.referrer)
+
+@bp.route('/make_important/<int:id>/')
+def make_important(id):
+    set_is_important(id)
     return redirect(request.referrer)
