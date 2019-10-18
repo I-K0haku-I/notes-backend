@@ -81,9 +81,15 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db-public.sqlite3'),
+    },
+    'private': {
+        'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+DATABASE_ROUTERS = ['middleware.masterkey.MasterKeyDBRouter']
 
 
 # Password validation
