@@ -1,16 +1,17 @@
-from settings_local import VERY_COOL_PASSWORD  # command local only anyway
+from base_api_connector import APIResource, GenericAPIConnector
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from django.utils.dateparse import parse_duration
 
-from base_api_connector import GenericAPIConnector, APIResource
-
 from notes.models import Note, NoteTag
+from settings import VERY_COOL_PASSWORD
 
+STEAL_FROM_URL = 'http://vserver.k0haku.space/b/api/'
+STEAL_FROM_PASSWORD = VERY_COOL_PASSWORD
 
 class Connector(GenericAPIConnector):
-    base_api_url = 'https://www.k0haku.space/b/api/'
-    base_headers = {'cool-token': VERY_COOL_PASSWORD}
+    base_api_url = STEAL_FROM_URL
+    base_headers = {'cool-token': STEAL_FROM_PASSWORD}
     notes = APIResource('all')
     tags = APIResource('all')
 
