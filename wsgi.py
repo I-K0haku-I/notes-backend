@@ -13,10 +13,9 @@ from django.core.wsgi import get_wsgi_application
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from todo_app import create_app
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
+
 django_app = get_wsgi_application()
 flask_app = create_app()
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-
 application = DispatcherMiddleware(flask_app, {'/b': django_app})
-
