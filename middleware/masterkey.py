@@ -24,3 +24,6 @@ class MasterKeyMiddleware:
 class MasterKeyDBRouter:
     def db_for_read(self, model, **hints):
         return db_local.db_to_use
+    
+    def db_for_write(self, model, **hints):
+        return db_local.db_to_use
