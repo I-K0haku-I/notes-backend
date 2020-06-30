@@ -12,3 +12,7 @@ class TrelloReceiverView(APIView):
         logger.error('####: ' + str(request.data))
         return Response('BOOM')
         
+    def post(self, request):
+        logger.error('####: ' + str(request.data))
+        return Response('BOOM')
+        
