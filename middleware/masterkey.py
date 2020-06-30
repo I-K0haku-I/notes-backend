@@ -1,24 +1,26 @@
 from threading import local
 from django.conf import settings
 from django.http import HttpResponseForbidden
+from rest_framework.permissions import BasePermission
 from flask import has_app_context, session
 
 db_local = local()
 db_local.db_to_use = 'default'
 
+
 class MasterKeyMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-    
+
     def __call__(self, request):
-        token = request.META.get('HTTP_COOL_TOKEN')
-        if token is None and not settings.DEBUG:
-            return HttpResponseForbidden('You need a cool token to access this.')
-        if token == settings.VERY_COOL_PASSWORD:
-            # return HttpResponseForbidden('Your token was not cool enough.')
-            db_local.db_to_use = 'private'
-        else:
-            db_local.db_to_use = 'default'
+        # token = request.META.get('HTTP_COOL_TOKEN')
+        # if token is None and not settings.DEBUG:
+        #     return HttpResponseForbidden('You need a cool token to access this.')
+        # if token == settings.VERY_COOL_PASSWORD:
+        #     # return HttpResponseForbidden('Your token was not cool enough.')
+        #     db_local.db_to_use = 'private'
+        # else:
+        #     db_local.db_to_use = 'default'
         response = self.get_response(request)
         return response
 
@@ -37,3 +39,16 @@ class MasterKeyDBRouter:
 
     def db_for_write(self, model, **hints):
         return self.get_access()
+
+
+class MasterKeyRequired:
+    def has_permission(self, request, view):
+        token = request.META.get('HTTP_COOL_TOKEN')
+        if token is None and not settings.DEBUG:
+            return False
+        if token == settings.VERY_COOL_PASSWORD:
+            # return HttpResponseForbidden('Your token was not cool enough.')
+            db_local.db_to_use = 'private'
+        else:
+            db_local.db_to_use = 'default'
+        return True

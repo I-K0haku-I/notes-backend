@@ -1,15 +1,20 @@
 from datetime import date
 
-from rest_framework import status, mixins, viewsets
+from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
+from middleware.masterkey import MasterKeyRequired
 from notes.models import Note, NoteTag
 
 from .serializers import NotesSerializer
 
+
 class NotesViewSet(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NotesSerializer
+
+    def get_permissions(self):
+        return [MasterKeyRequired()]
 
     def get_queryset(self):
         queryset = super().get_queryset()
