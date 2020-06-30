@@ -1,4 +1,4 @@
-﻿aiohttp==3.6.1
+aiohttp==3.6.1
 asgiref==3.2.3
 async-timeout==3.0.1
 attrs==19.1.0
@@ -18,9 +18,11 @@ MarkupSafe==1.1.1
 multidict==4.5.2
 mysqlclient==1.4.4
 pycodestyle==2.5.0
+pystache==0.5.4
 pytz==2019.1
 requests==2.22.0
 sqlparse==0.3.0
+trello==0.9.4
 urllib3==1.24.2
 Werkzeug==0.16.0
 whitenoise==4.1.4

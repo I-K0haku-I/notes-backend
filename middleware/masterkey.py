@@ -12,7 +12,7 @@ class MasterKeyMiddleware:
     
     def __call__(self, request):
         token = request.META.get('HTTP_COOL_TOKEN')
-        if token is None:
+        if token is None and not settings.DEBUG:
             return HttpResponseForbidden('You need a cool token to access this.')
         if token == settings.VERY_COOL_PASSWORD:
             # return HttpResponseForbidden('Your token was not cool enough.')

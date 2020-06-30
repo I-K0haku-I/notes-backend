@@ -157,6 +157,10 @@ LOGGING = {
 }
 
 VERY_COOL_PASSWORD = 'yourpasswordhere'
+TRELLO_KEY = 'trellokeyforyouraccount'
+TRELLO_TOKEN = 'trellotokenforyouraccount'
+TRELLO_CALLBACK = 'somebacllback.de/api'
+TRELLO_USER = 'username'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -164,6 +168,7 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'cool-token'
 ]
+
 
 # if DEBUG:
 #     MIDDLEWARE = [
