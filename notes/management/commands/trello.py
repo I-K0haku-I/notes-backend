@@ -24,15 +24,12 @@ class Command(BaseCommand):
                     if wh['idModel'] == board_id:
                         wh_id = wh['id']
                         break
-            print(wh_id)
-            # trello.webhooks.delete(webhook_id)
+            print('Deleting webhook for:', wh_id)
+            trello.webhooks.delete(wh_id)
         else:
-            # TODO: figure out why this doesn't work
-            # maybe need available url, so deply this?
-            # basically make creating callback work somehow
+            r = trello.webhooks.new(settings.TRELLO_CALLBACK, board_id, description='Tets')
+            print('Selected board will now call this endpoint after changes:')
             print(settings.TRELLO_CALLBACK)
             print(board_id)
-            r = trello.webhooks.new(settings.TRELLO_CALLBACK, board_id, description='Tets')
             print(r)
-            print(r.content)
         

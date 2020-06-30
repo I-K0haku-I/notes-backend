@@ -147,11 +147,20 @@ LOGGING = {
             'filters': None,
             'class': 'logging.StreamHandler',
         },
+        'public_file': {
+            'level': 'ERROR',
+            'filters': None,
+            'class': 'logging.FileHandler',
+        },
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
+        },
+        'trello': {
+            'handlers': ['public_file'],
+            'level': 'ERROR',
         }
     }
 }
