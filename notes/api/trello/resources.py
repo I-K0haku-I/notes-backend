@@ -7,3 +7,4 @@ from rest_framework.response import Response
 class TrelloReceiverView(APIView):
     def get(self, request):
         return Response('BOOM')
+        
