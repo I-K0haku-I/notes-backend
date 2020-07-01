@@ -41,7 +41,7 @@ class MasterKeyDBRouter:
         return self.get_access()
 
 
-class MasterKeyRequired:
+class MasterKeyRequired(BasePermission):
     def has_permission(self, request, view):
         token = request.META.get('HTTP_COOL_TOKEN')
         if token is None and not settings.DEBUG:
