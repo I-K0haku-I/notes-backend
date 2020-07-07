@@ -87,7 +87,7 @@ def all(tags=None):
 @bp.route('all/date')
 @bp.route('all/date/<date>')
 @protect
-def all(date=None):
+def all_date(date=None):
     filters = {'time': datetime.today()}
     if date is not None:
         filters['time'] = datetime.fromisoformat(str(date))

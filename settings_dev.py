@@ -151,6 +151,7 @@ LOGGING = {
             'level': 'ERROR',
             'filters': None,
             'class': 'logging.FileHandler',
+            'filename': 'trello_history.txt',
         },
     },
     'loggers': {
