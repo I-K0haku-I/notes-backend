@@ -5,6 +5,7 @@ from django.conf import settings
 from flask import Blueprint, redirect, render_template, request, session
 
 from notes.models import Note, NoteTag
+from middleware import masterkey
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')
 
@@ -12,11 +13,19 @@ bp = Blueprint('notes', __name__, url_prefix='/notes')
 def protect(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if 'is_logged_in' not in session:
-            passw = request.args.get('p')
-            if passw != settings.VERY_COOL_PASSWORD:
-                return 'Need password!'
+        passw = request.args.get('p')
+        if passw is not None:
+            if passw == settings.VERY_COOL_PASSWORD:
+                session['has_admin'] = True
+            else:
+                session.pop('has_admin', None)
             session['is_logged_in'] = True
+        if 'is_logged_in' not in session or not session['is_logged_in']:
+            return 'Need password!'
+        if 'has_admin' in session and session['has_admin']:
+            masterkey.db_local.db_to_use = 'private'
+        else:
+            masterkey.db_local.db_to_use = 'default'
         return func(*args, **kwargs)
     return wrapper
 
@@ -88,9 +97,10 @@ def all(tags=None):
 @bp.route('all/date/<date>')
 @protect
 def all_date(date=None):
-    filters = {'time': datetime.today()}
+    filters = {'time__date__range': [datetime.today(), datetime.today()]}
     if date is not None:
-        filters['time'] = datetime.fromisoformat(str(date))
+        new_date = datetime.fromisoformat(str(date))
+        filters['time__date__range'] = [new_date, new_date]
     notes = get_notes(**filters)
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
