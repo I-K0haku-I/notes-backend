@@ -1,8 +1,10 @@
+from datetime import datetime
 from functools import wraps
-from django.conf import settings
-from flask import Blueprint, render_template, redirect, request, session
-from notes.models import Note, NoteTag
 
+from django.conf import settings
+from flask import Blueprint, redirect, render_template, request, session
+
+from notes.models import Note, NoteTag
 
 bp = Blueprint('notes', __name__, url_prefix='/notes')
 
@@ -18,6 +20,7 @@ def protect(func):
         return func(*args, **kwargs)
     return wrapper
 
+
 def flasked_notes(notes):
     notes = [
         {
@@ -28,8 +31,10 @@ def flasked_notes(notes):
     return notes
 
 
-def get_notes():
+def get_notes(**kwargs):
     notes = Note.objects.all()
+    if len(kwargs) > 0:
+        notes = notes.filter(**kwargs)
     notes = flasked_notes(notes)
     return notes
 
@@ -38,6 +43,7 @@ def set_is_done(id, is_done):
     n = Note.objects.get(id=id)
     n.is_done = is_done
     n.save()
+
 
 def set_is_important(id):
     n = Note.objects.get(id=id)
@@ -48,8 +54,10 @@ def set_is_important(id):
 def filter_tags(notes, tags_lst):
     return [n for n in notes if any([tag in n['tags'] for tag in tags_lst])]
 
+
 def filter_tags_not(notes, tags_lst):
     return [n for n in notes if not any([tag in n['tags'] for tag in tags_lst])]
+
 
 def filter_is_done(notes, is_done):
     return [n for n in notes if n['is_done'] == is_done]
@@ -73,6 +81,17 @@ def all(tags=None):
         if not isinstance(tags, (list, tuple)):
             tags = [tags]
         notes = filter_tags(notes, tags)
+    return render_template('notes/index.html', notes=notes, title='NOTES')
+
+
+@bp.route('all/date')
+@bp.route('all/date/<date>')
+@protect
+def all(date=None):
+    filters = {'time': datetime.today()}
+    if date is not None:
+        filters['time'] = datetime.fromisoformat(str(date))
+    notes = get_notes()
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
 
@@ -104,6 +123,7 @@ def activate(id, is_done):
     is_done = True if is_done == 'True' else False
     set_is_done(id, not is_done)
     return redirect(request.referrer)
+
 
 @bp.route('/make_important/<int:id>/')
 def make_important(id):

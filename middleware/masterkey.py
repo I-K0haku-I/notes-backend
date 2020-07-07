@@ -43,12 +43,18 @@ class MasterKeyDBRouter:
 
 class MasterKeyRequired(BasePermission):
     def has_permission(self, request, view):
+        if settings.DEBUG:
+            db_local.db_to_use = 'private'
+            return True
+
         token = request.META.get('HTTP_COOL_TOKEN')
-        if token is None and not settings.DEBUG:
+        if token is None:
             return False
+
         if token == settings.VERY_COOL_PASSWORD:
             # return HttpResponseForbidden('Your token was not cool enough.')
             db_local.db_to_use = 'private'
         else:
             db_local.db_to_use = 'default'
+
         return True
