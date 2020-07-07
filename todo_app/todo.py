@@ -91,7 +91,7 @@ def all_date(date=None):
     filters = {'time': datetime.today()}
     if date is not None:
         filters['time'] = datetime.fromisoformat(str(date))
-    notes = get_notes()
+    notes = get_notes(**filters)
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
 

@@ -14,9 +14,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootadmin.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/hive.css') }}">
 
-    <title>{% block title %}
-
-        {% endblock title %} - TODO APP</title>
+    <title>{% block title %} {% endblock title %} - TODO APP</title>
 </head>
 
 <body class="bg-light">
@@ -41,6 +39,7 @@
                     </ul>
                 </li>
                 <li><a href="{{ url_for('notes.done') }}"><i class="fa fa-fw fa-check-square"></i> DONE</a></li>
+                <li><a href="{{ url_for('notes.all_date') }}"><i class="fa fa-fw fa-calendar"></i> TODAY</a></li>
             </ul>
         </div>
 
@@ -50,8 +49,7 @@
             </h2>
             {% for message in get_flashed_messages() %}
             <div class="flash">{{ message }}</div>
-            {% endfor %}
-            {% block content %}{% endblock %}
+            {% endfor %} {% block content %}{% endblock %}
         </div>
     </div>
 
