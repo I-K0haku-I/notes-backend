@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 
 from django.conf import settings
@@ -97,10 +97,12 @@ def all(tags=None):
 @bp.route('all/date/<date>')
 @protect
 def all_date(date=None):
-    filters = {'time__date__range': [datetime.today(), datetime.today()]}
-    if date is not None:
+    new_date = datetime.today()
+    if date == 'prev':  # previous
+        new_date -= timedelta(days=1)
+    elif date is not None:
         new_date = datetime.fromisoformat(str(date))
-        filters['time__date__range'] = [new_date, new_date]
+    filters = {'time__date__range': [new_date, new_date]}
     notes = get_notes(**filters)
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
