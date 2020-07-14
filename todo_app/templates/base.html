@@ -40,6 +40,7 @@
                 </li>
                 <li><a href="{{ url_for('notes.done') }}"><i class="fa fa-fw fa-check-square"></i> DONE</a></li>
                 <li><a href="{{ url_for('notes.all_date') }}"><i class="fa fa-fw fa-calendar"></i> TODAY</a></li>
+                <li><a href="{{ url_for('notes.all_date', date='prev') }}"><i class="fa fa-fw fa-calendar"></i> YESTERDAY</a></li>
             </ul>
         </div>
 
