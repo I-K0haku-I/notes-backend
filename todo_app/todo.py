@@ -75,8 +75,14 @@ def filter_is_done(notes, is_done):
 todo_filter = ('todo', 'todos', 'task', 'tasks')
 
 
-def get_non_todos():
-    notes = Note.objects.all().exclude(tags__name__in=todo_filter)
+def get_non_todos(amount: int = None, tags=None):
+    if tags is not None:
+        if not isinstance(tags, (list, tuple)):
+            tags = [tags]
+        notes = Note.objects.filter(tags__name__in=tags)
+    else:
+        notes = Note.objects.all().exclude(tags__name__in=todo_filter)
+    notes = notes.order_by('-id')[:amount]
     return flasked_notes(notes)
 
 
@@ -85,11 +91,11 @@ def get_non_todos():
 @bp.route('/all/<tags>')
 @protect
 def all(tags=None):
-    notes = get_non_todos()
-    if tags is not None:
-        if not isinstance(tags, (list, tuple)):
-            tags = [tags]
-        notes = filter_tags(notes, tags)
+    notes = get_non_todos(amount=20, tags=tags)
+    # if tags is not None:
+    #     if not isinstance(tags, (list, tuple)):
+    #         tags = [tags]
+    #     notes = filter_tags(notes, tags)
     return render_template('notes/index.html', notes=notes, title='NOTES')
 
 
