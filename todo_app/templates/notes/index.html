@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 
 {% block header %}
-<h1>{% block title %}{{ title }}{% endblock %}</h1>
+
+<div class="d-flex justify-content-around">
+{% if prev_date %}
+    <a href="{{ url_for('notes.all_date', date=prev_date) }}" class="btn btn-outline-primary align-self-center"><i class="fa fa-fw fa-arrow-left"></i></a>
+{% endif %}
+<h1 class="align-self-center">{% block title %}{{ title }}{% endblock %}</h1>
+{% if next_date %}
+    <a href="{{ url_for('notes.all_date', date=next_date) }}" class="btn btn-outline-primary align-self-center"><i class="fa fa-fw fa-arrow-right"></i></a>
+{% endif %}
+</div>
 {% endblock %}
 
 {% block content %}

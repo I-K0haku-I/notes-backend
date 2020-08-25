@@ -110,7 +110,15 @@ def all_date(date=None):
         new_date = datetime.fromisoformat(str(date))
     filters = {'time__date__range': [new_date, new_date]}
     notes = get_notes(**filters)
-    return render_template('notes/index.html', notes=notes, title='NOTES')
+
+    get_str = lambda dt: dt.strftime('%Y-%m-%d')
+    kwargs = {
+        'notes': notes,
+        'prev_date': get_str(new_date - timedelta(days=1)),
+        'next_date': get_str(new_date + timedelta(days=1)),
+        'title': get_str(new_date),
+    }
+    return render_template('notes/index.html', **kwargs)
 
 
 @bp.route('/todo')
