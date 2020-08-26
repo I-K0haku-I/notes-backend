@@ -28,19 +28,19 @@
     <div class="card-body">
         <p class="body">{{ note['body'] }}</p>
         <form action="{{ url_for('notes.activate', id=note['id'], is_done=note['is_done']) }}" method="get">
-            {% if title != 'NOTES' %}
-            {% if note['body'] != '' %}
-            <hr>
-            {% endif %}
-            {% if note['is_done'] %}
-            <button type="submit" class="btn btn-success align-right">
-                RE-ENABLE
-            </button>
-            {% else %}
-            <button type="submit" class="btn btn-outline-success align-right">
-                DONE
-            </button>
-            {% endif %}
+            {% if is_todo %}
+                {% if note['body'] != '' %}
+                <hr>
+                {% endif %}
+                {% if note['is_done'] %}
+                <button type="submit" class="btn btn-success align-right">
+                    RE-ENABLE
+                </button>
+                {% else %}
+                <button type="submit" class="btn btn-outline-success align-right">
+                    DONE
+                </button>
+                {% endif %}
             {% endif %}
         </form>
         <form action="{{ url_for('notes.make_important', id=note['id']) }}" method="get">

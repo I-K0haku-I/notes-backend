@@ -140,14 +140,14 @@ def todo(tags=None):
             tags = [tags]
         todos = filter_tags(todos, tags)
     todos = sorted(todos, key=lambda t: t['is_important'], reverse=True)
-    return render_template('notes/index.html', notes=todos, title='TODO')
+    return render_template('notes/index.html', notes=todos, title='TODO', is_todo=True)
 
 
 @bp.route('/done')
 @protect
 def done():
     dones = filter_is_done(filter_tags(get_notes(), todo_filter), True)
-    return render_template('notes/index.html', notes=dones, title='DONE')
+    return render_template('notes/index.html', notes=dones, title='DONE', is_todo=True)
 
 
 @bp.route('/activate/<int:id>/<string:is_done>')
