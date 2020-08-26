@@ -1,7 +1,9 @@
+from uwsgidecorators import postfork
 from datetime import datetime, timedelta
 from functools import wraps
 
 from django.conf import settings
+from django.db import connection as django_conn
 from flask import Blueprint, redirect, render_template, request, session
 
 from notes.models import Note, NoteTag
@@ -28,6 +30,11 @@ def protect(func):
             masterkey.db_local.db_to_use = 'default'
         return func(*args, **kwargs)
     return wrapper
+
+
+@postfork
+def close_connection():
+    django_conn.close()
 
 
 def flasked_notes(notes):
