@@ -195,3 +195,5 @@ ELASTICSEARCH_DSL = {
         'hosts': 'localhost:9200'
     }
 }
+
+ELASTICSEARCH_DSL_AUTOSYNC = False
