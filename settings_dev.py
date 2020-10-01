@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from corsheaders.defaults import default_headers
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +26,7 @@ SECRET_KEY = 'w$dz8b2#-g-2v&x*y#ehm8lrjx68p8)sa!e_*ym^@zs1otkt1g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
     'corsheaders',
 ]
 
@@ -174,7 +177,6 @@ TRELLO_USER = 'username'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'cool-token'
 ]
@@ -187,3 +189,9 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 #     INSTALLED_APPS = [
 #         'whitenoise.runserver_nostatic',
 #     ] + INSTALLED_APPS
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    }
+}

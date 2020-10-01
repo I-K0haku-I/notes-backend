@@ -103,7 +103,19 @@ def all(tags=None):
     #     if not isinstance(tags, (list, tuple)):
     #         tags = [tags]
     #     notes = filter_tags(notes, tags)
-    return render_template('notes/index.html', notes=notes, title='NOTES')
+    return render_template('notes/index.html.j2', notes=notes, title='NOTES')
+
+@bp.route('/search')
+@protect
+def search(notes_found=None):
+    notes_found = request.args.get('notes_found')
+    notes = get_notes(id__in=notes_found.split(',')) if notes_found else []
+    # notes = get_non_todos(amount=20, tags=tags)
+    # if tags is not None:
+    #     if not isinstance(tags, (list, tuple)):
+    #         tags = [tags]
+    #     notes = filter_tags(notes, tags)
+    return render_template('notes/search.html.j2', notes=notes, title='SEARCH')
 
 
 @bp.route('all/date')
@@ -125,7 +137,7 @@ def all_date(date=None):
         'next_date': get_str(new_date + timedelta(days=1)),
         'title': get_str(new_date),
     }
-    return render_template('notes/index.html', **kwargs)
+    return render_template('notes/index.html.j2', **kwargs)
 
 
 @bp.route('/todo')
@@ -140,14 +152,14 @@ def todo(tags=None):
             tags = [tags]
         todos = filter_tags(todos, tags)
     todos = sorted(todos, key=lambda t: t['is_important'], reverse=True)
-    return render_template('notes/index.html', notes=todos, title='TODO', is_todo=True)
+    return render_template('notes/index.html.j2', notes=todos, title='TODO', is_todo=True)
 
 
 @bp.route('/done')
 @protect
 def done():
     dones = filter_is_done(filter_tags(get_notes(), todo_filter), True)
-    return render_template('notes/index.html', notes=dones, title='DONE', is_todo=True)
+    return render_template('notes/index.html.j2', notes=dones, title='DONE', is_todo=True)
 
 
 @bp.route('/activate/<int:id>/<string:is_done>')
