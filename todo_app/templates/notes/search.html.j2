@@ -1,0 +1,94 @@
+{% extends 'notes/index.html.j2' %}
+
+{% block header_index %}
+<div class="search-box col-md-5">
+    <form action="" id="search-submit" onsubmit="reloadWithSearch(event)">
+        <div class="input-group mb-3">
+            <!-- <div class="input-group-prepend">
+                <button class="btn btn-light dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">All</button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Search</a>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated Category</a>
+                </div>
+            </div> -->
+            <input id="search-input-box" type="text" class="form-control" aria-label="Search input with dropdown button">
+            <input type="hidden" name="notes_found" value="">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
+
+{% block content_index %}
+<div id="search-suggest" class="content p-4"></div>
+{% endblock %}
+
+{% block extra_scripts %} 
+<script>
+function getArticleHTML(id, title, time, content = '') {
+    if (content != '') {
+        content = `<div class="card-body">
+            <p class="body">${content}</p>
+        </div>`
+    }
+    return `<article class="post card mb-4">
+        <header class="card-header">
+            <div>
+                <h1>${title}</h1>
+                <div class='about'>ID: ${id}</div>
+                <div class='about'>made @ ${time}</div>
+            </div>
+        </header>
+        <div class="card-body">
+            <p class="body">${content}</p> 
+        </div>
+    </article>`
+}
+let search = document.getElementById("search-input-box");
+let suggest = document.getElementById("search-suggest");
+let submit = document.getElementById("search-submit");
+let result = []; let searchNum = 0;
+search.addEventListener("keyup", function() {
+    if (searchNum > 0) { return; }
+    searchNum++;
+    search.disabled = true;
+    submit.disabled = true;
+    fetch('/b/api/notes_search/?search=' + search.value)
+        .then(r => r.json())
+        .then(data => {
+            result = [];
+            suggest.innerHTML = "";
+            data.forEach((r, key, arr) => {
+                result.push(r.id);
+                console.log(r);
+                suggest.innerHTML += getArticleHTML(r.id, r.content, r.time, r.detail);
+                if (!Object.is(arr.length - 1, key)) {
+                    suggest.innerHTML += "<hr>";
+                }
+            });
+            searchNum--;
+            if (searchNum == 0) {
+                search.disabled = false;
+                submit.disabled = false;
+                search.focus();
+            }
+        })
+        .catch(err => {
+            searchNum--;
+            if (searchNum == 0) {
+                search.disabled = false;
+                submit.disabled = false;
+                search.focus();
+            }
+        });
+});
+function reloadWithSearch(e) {
+    document.getElementsByName("notes_found")[0].value = result;
+};
+</script>
+{% endblock %}

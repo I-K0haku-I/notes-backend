@@ -1,6 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'base.html.j2' %}
 
 {% block header %}
+
+{% block header_index %}
+{% endblock %}
 
 <div class="d-flex justify-content-around">
 {% if prev_date %}
@@ -14,6 +17,10 @@
 {% endblock %}
 
 {% block content %}
+
+{% block content_index %}
+{% endblock %}
+
 {% for note in notes %}
 <article class="post card mb-4 {% if note['is_important'] %}border border-danger{% endif %}"{% if note['is_important'] %} style="border-width: 5px;"{% endif %}>
     <header class="card-header">

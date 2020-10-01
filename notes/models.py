@@ -15,7 +15,6 @@ class Note(models.Model):
     is_important = models.BooleanField(default=False)
 
 
-
 class NoteTag(models.Model):
     name = models.CharField(max_length=15)
     description = models.TextField(blank=True)

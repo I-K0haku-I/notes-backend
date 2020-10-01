@@ -1,10 +1,14 @@
 from datetime import date
 
+from django_elasticsearch_dsl_drf.filter_backends import CompoundSearchFilterBackend
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
 from rest_framework import mixins, status, viewsets
 from rest_framework.response import Response
 
 from middleware.masterkey import MasterKeyRequired
+from notes.documents import NoteDocument
 from notes.models import Note, NoteTag
+from notes.serializers import NoteDocumentSerializer
 
 from .serializers import NotesSerializer
 
@@ -37,3 +41,11 @@ class NotesViewSet(viewsets.ModelViewSet):
         return queryset
 
 # TODO: add filtering for timeframe too, only day possible right now
+
+
+class NotesSearchViewSet(DocumentViewSet):
+    document = NoteDocument
+    serializer_class = NoteDocumentSerializer
+    lookup_field = 'note_text'
+    filter_backends = [CompoundSearchFilterBackend]
+    search_fields = ('note_text',)
